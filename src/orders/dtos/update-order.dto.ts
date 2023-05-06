@@ -1,17 +1,21 @@
 /* eslint-disable prettier/prettier */
-import { IsNotEmpty, IsString, Length } from 'class-validator';
+import {
+  IsOptional,
+  IsNotEmpty,
+  IsString,
+  IsUUID,
+} from 'class-validator';
 
 export class UpdateOrderDTO {
+  @IsOptional()
   @IsNotEmpty()
+  @IsUUID()
   @IsString()
   productId: string;
 
+  @IsOptional()
   @IsNotEmpty()
+  @IsUUID()
   @IsString()
-  @Length(10, 20)
-  client: string;
-
-  @IsNotEmpty()
-  @IsString()
-  address: string;
+  clientId: string;
 }
