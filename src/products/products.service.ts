@@ -14,7 +14,7 @@ export class ProductsService {
 
   public getById(id: Product['id']): Promise<Product | null> {
     return this.prismaService.product.findUnique({
-      where: { id, price: 100 },
+      where: { id },
     });
   }
 

@@ -15,32 +15,27 @@ import { UpdateOrderDTO } from './dtos/update-order.dto';
 
 @Controller('orders')
 export class OrdersController {
-  constructor(private ordersService: OrdersService) {
-    this.ordersService = ordersService;
-  }
+  constructor(private ordersService: OrdersService) {}
+
   @Get('/')
-  getAll(): any {
+  async getAll() {
     return this.ordersService.getAll();
   }
 
   @Get('/:id')
   async getById(@Param('id', new ParseUUIDPipe()) id: string) {
     const order = await this.ordersService.getById(id);
-    if (!order) {
-      throw new NotFoundException('Order not found');
-    }
+    if (!order) throw new NotFoundException('Order not found');
     return order;
   }
 
   @Delete('/:id')
   async deleteById(@Param('id', new ParseUUIDPipe()) id: string) {
-    if (!(await this.ordersService.getById(id))) {
+    if (!(await this.ordersService.getById(id)))
       throw new NotFoundException('Order not found');
-    }
-    await this.ordersService.deleteById(id);
+    this.ordersService.deleteById(id);
     return { success: true };
   }
-
   @Post('/')
   create(@Body() orderData: CreateOrderDTO) {
     return this.ordersService.create(orderData);
@@ -51,11 +46,9 @@ export class OrdersController {
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body() orderData: UpdateOrderDTO,
   ) {
-    if (!(await this.ordersService.getById(id))) {
+    if (!(await this.ordersService.getById(id)))
       throw new NotFoundException('Order not found');
-    }
-
-    await this.ordersService.updateById(id, orderData);
+    this.ordersService.updateById(id, orderData);
     return { success: true };
   }
 }
